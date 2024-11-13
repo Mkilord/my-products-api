@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: my-products-api
+logging:
+  level:
+    ru.romashkaco.myproducts.config: debug
+    ru.romashkaco.myproducts.exception: debug
+    ru.romashkaco.myproducts.controller: debug
