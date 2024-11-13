@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class Product {
     Long id;
     @NotNull(message = "Product name is required!")
-    @Size(max = 255, message = "Product name should not exceed 255 characters")
+    @Size(min = 5, max = 255, message = "The product name must not exceed 255 characters and contain at least 5 characters")
     String name;
     @Size(max = 4096, message = "Product description should not exceed 4096 characters")
     String description;
