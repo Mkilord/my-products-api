@@ -14,12 +14,11 @@
     <packaging>war</packaging>
     <name>my-products-api</name>
     <description>my-products-api</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <name>Mkilord</name>
+            <organization>RomashkaCO</organization>
+        </developer>
     </developers>
     <scm>
         <connection/>
