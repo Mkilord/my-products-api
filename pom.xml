@@ -11,7 +11,7 @@
     <groupId>ru.romashkaco</groupId>
     <artifactId>my-products</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>my-products-api</name>
     <description>my-products-api</description>
     <developers>
@@ -72,6 +72,7 @@
     </dependencies>
 
     <build>
+        <finalName>my-products-api.jar</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
