@@ -6,8 +6,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.romashkaco.myproducts.dto.OperationResponse;
+import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.model.Product;
-import ru.romashkaco.myproducts.service.ProductServiceI;
+import ru.romashkaco.myproducts.service.ProductService;
 
 import java.util.List;
 
@@ -19,7 +20,12 @@ import static lombok.AccessLevel.PRIVATE;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = PRIVATE)
 public class ProductController {
-    ProductServiceI productService;
+    ProductService productService;
+
+    @GetMapping("/filter")
+    public List<Product> getFilteredProducts(@Valid @ModelAttribute ProductFilterRequest filterRequest) {
+        return productService.getFilteredProducts(filterRequest);
+    }
 
     @GetMapping
     public List<Product> getAllProduct() {
@@ -51,4 +57,5 @@ public class ProductController {
         productService.delete(id);
         return new OperationResponse("Operation successful");
     }
+
 }

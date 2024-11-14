@@ -2,8 +2,11 @@ package ru.romashkaco.myproducts.service;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
 import ru.romashkaco.myproducts.repository.ProductRepository;
@@ -11,6 +14,7 @@ import ru.romashkaco.myproducts.repository.ProductRepository;
 import java.util.List;
 
 import static lombok.AccessLevel.PRIVATE;
+import static ru.romashkaco.myproducts.repository.specification.ProductSpecification.*;
 
 @Service
 @FieldDefaults(makeFinal = true, level = PRIVATE)
@@ -42,6 +46,18 @@ public class ProductServiceImpl implements ProductService {
         updatedProduct.setId(id);
         return repo.save(updatedProduct);
 
+    }
+
+    @Override
+    public List<Product> getFilteredProducts(ProductFilterRequest filReq) {
+        var spec = nameContains(filReq.getName())
+                .and(priceGraterThanOrEqual(filReq.getMinPrice()))
+                .and(priceLessThanOrEqual(filReq.getMaxPrice()))
+                .and(inStock(filReq.getInStock()));
+        var sortBy = filReq.getSortBy();
+        var sort = filReq.isAscending() ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        var pageable = PageRequest.of(filReq.getPage(), filReq.getSize(), sort);
+        return repo.findAll(spec, pageable).getContent();
     }
 
     @Transactional
