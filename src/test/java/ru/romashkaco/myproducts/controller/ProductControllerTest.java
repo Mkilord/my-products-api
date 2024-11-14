@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
@@ -22,7 +23,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@TestPropertySource(properties = {
+        "server.port=8080"
+})
 @FieldDefaults(level = PRIVATE)
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {

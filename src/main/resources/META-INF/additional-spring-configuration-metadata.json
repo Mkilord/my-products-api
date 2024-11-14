@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "APPLICATION_SERVER_PORT",
+      "type": "java.lang.String",
+      "description": "This is application server port."
+  }
+] }

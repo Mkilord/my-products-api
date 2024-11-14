@@ -1,24 +1,14 @@
 package ru.romashkaco.myproducts.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.romashkaco.myproducts.model.Product;
 
-import java.util.List;
-import java.util.Optional;
 
-
-public interface ProductRepository {
-
-    List<Product> findAll();
-
-    Optional<Product> findById(Long id);
-
-    Optional<Product> update(Product product);
-
-    Product create(Product product);
-
-    boolean deleteById(Long id);
-
-    boolean existsById(Long id);
-
-
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Modifying
+    @Query("DELETE FROM Product p WHERE p.id = :id")
+    int deleteByIdAndReturnCount(@Param("id") Long id);
 }

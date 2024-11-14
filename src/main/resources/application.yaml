@@ -1,8 +1,26 @@
 spring:
   application:
     name: my-products-api
+  datasource:
+    url: ${APPLICATION_DB_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: product_schema
+  sql:
+    init:
+      mode: always
 logging:
   level:
     ru.romashkaco.myproducts.config: debug
     ru.romashkaco.myproducts.exception: debug
     ru.romashkaco.myproducts.controller: debug
+server:
+  port: ${APPLICATION_SERVER_PORT}

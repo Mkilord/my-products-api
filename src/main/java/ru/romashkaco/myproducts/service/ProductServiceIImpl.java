@@ -3,6 +3,7 @@ package ru.romashkaco.myproducts.service;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
 import ru.romashkaco.myproducts.repository.ProductRepository;
@@ -28,20 +29,25 @@ public class ProductServiceIImpl implements ProductServiceI {
         return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    @Transactional
     @Override
     public Product create(Product product) {
-        return repo.create(product);
+        return repo.save(product);
     }
 
+    @Transactional
     @Override
     public Product updateProduct(Long id, Product updatedProduct) {
+        if (id == null || !repo.existsById(id)) throw new ResourceNotFoundException(id);
         updatedProduct.setId(id);
-        return repo.update(updatedProduct).orElseThrow(() -> new ResourceNotFoundException(id));
+        return repo.save(updatedProduct);
+
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
-        var notDeleted = !repo.deleteById(id);
-        if (notDeleted) throw new ResourceNotFoundException(id);
+        var deletedCount = repo.deleteByIdAndReturnCount(id);
+        if (deletedCount == 0) throw new ResourceNotFoundException(id);
     }
 }
