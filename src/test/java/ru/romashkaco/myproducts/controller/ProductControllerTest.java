@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
-import ru.romashkaco.myproducts.service.ProductServiceImpl;
+import ru.romashkaco.myproducts.service.impl.ProductServiceImpl;
 
 import java.util.List;
 

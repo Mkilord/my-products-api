@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.model.Product;
 import ru.romashkaco.myproducts.repository.ProductRepository;
+import ru.romashkaco.myproducts.service.impl.ProductServiceImpl;
 
 import static lombok.AccessLevel.PRIVATE;
 
