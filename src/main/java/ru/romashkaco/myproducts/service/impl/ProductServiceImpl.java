@@ -1,4 +1,4 @@
-package ru.romashkaco.myproducts.service;
+package ru.romashkaco.myproducts.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +10,7 @@ import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
 import ru.romashkaco.myproducts.repository.ProductRepository;
+import ru.romashkaco.myproducts.service.ProductService;
 
 import java.util.List;
 
