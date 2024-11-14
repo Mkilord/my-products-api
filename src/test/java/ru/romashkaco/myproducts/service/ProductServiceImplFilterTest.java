@@ -52,8 +52,8 @@ class ProductServiceImplFilterTest {
         productRepository.deleteAll();
 
         var product1 = new Product(1L, "Product A", "Description A", 100L, true);
-        var product2 = new Product(1L, "Product B", "Description B", 150L, false);
-        var product3 = new Product(1L, "Product C", "Description C", 50L, true);
+        var product2 = new Product(2L, "Product B", "Description B", 150L, false);
+        var product3 = new Product(3L, "Product C", "Description C", 50L, true);
 
         productRepository.save(product1);
         productRepository.save(product2);
