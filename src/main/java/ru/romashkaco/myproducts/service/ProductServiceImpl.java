@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Service
 @FieldDefaults(makeFinal = true, level = PRIVATE)
 @AllArgsConstructor
-public class ProductServiceIImpl implements ProductServiceI {
+public class ProductServiceImpl implements ProductService {
 
     ProductRepository repo;
 
