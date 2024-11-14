@@ -10,9 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.romashkaco.myproducts.dto.ProductFilterRequest;
 import ru.romashkaco.myproducts.exception.ResourceNotFoundException;
 import ru.romashkaco.myproducts.model.Product;
-import ru.romashkaco.myproducts.service.ProductServiceIImpl;
+import ru.romashkaco.myproducts.service.ProductServiceImpl;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @TestPropertySource(properties = {
         "server.port=8080"
 })
@@ -33,7 +35,7 @@ class ProductControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    ProductServiceIImpl productService;
+    ProductServiceImpl productService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -43,16 +45,42 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        product = generateProduct();
+        product = new Product(1L, "Test Product", "Description product", 1000L, true);
     }
 
-    private Product generateProduct() {
-        var product = new Product();
-        product.setId(1L);
-        product.setName("Test Product");
-        product.setDescription("Description product");
-        product.setPrice(1000L);
-        return product;
+    @Test
+    void testGetFilteredProducts() throws Exception {
+        var filReq = new ProductFilterRequest();
+        filReq.setMinPrice(50L);
+        filReq.setMaxPrice(150L);
+        filReq.setInStock(true);
+        filReq.setSortBy("price");
+        filReq.setAscending(true);
+        filReq.setPage(0);
+        filReq.setSize(10);
+
+        var product1 = new Product(1L, "Product A", "Description A", 100L, true);
+        var product2 = new Product(2L, "Product C", "Description C", 150L, true);
+
+        when(productService.getFilteredProducts(filReq)).thenReturn(List.of(product1, product2));
+
+        var resultActions = mockMvc.perform(get(URL + "/filter")
+                .param("minPrice", "50")
+                .param("maxPrice", "150")
+                .param("inStock", "true")
+                .param("sortBy", "price")
+                .param("ascending", "true")
+                .param("page", "0")
+                .param("size", "10")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("Product A"))
+                .andExpect(jsonPath("$[0].price").value(100))
+                .andExpect(jsonPath("$[1].name").value("Product C"))
+                .andExpect(jsonPath("$[1].price").value(150));
+
+        verify(productService, times(1)).getFilteredProducts(filReq);
     }
 
     @Test
@@ -126,12 +154,11 @@ class ProductControllerTest {
         invalidProduct.setId(null);
         invalidProduct.setName("");
         invalidProduct.setDescription("Super long description...".repeat(100));
-        invalidProduct.setPrice(-1);
+        invalidProduct.setPrice(-1L);
         mockMvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidProduct)))
                 .andExpect(status().isBadRequest());
 
     }
-
 }
